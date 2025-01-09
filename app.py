@@ -1,8 +1,16 @@
 from flask import Flask, request, send_file, jsonify
 import os
 from enhance import purewave_enhance
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+# Allow multiple origins
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:5173", "http://localhost:8080"]
+    }
+})
 
 INPUT_PATH = 'audio/dry/'
 OUTPUT_PATH = 'audio/wet/'
@@ -40,7 +48,7 @@ def enhance_audio():
         enhanced_audio_buffer,
         mimetype='audio/wav',
         as_attachment=True,
-        download_name='{audio_file.filename}(enhanced).wav'
+        download_name = audio_file.filename + ' (enhanced).wav'
     )
 
 
